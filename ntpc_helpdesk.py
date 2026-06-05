@@ -190,7 +190,7 @@ def load_data():
       - status            : OVERDUE / DUE SOON / UPCOMING / OK
     """
     # ✅ FIX 4: Check file existence before reading — prevents raw crash
-    file_path = "NTPC_IT-PROJECT.csv"
+    file_path = "NTPC_IT-PROJECT.xlsx"
     if not os.path.exists(file_path):
         st.error(
             "❌ Data file **'NTPC_IT-PROJECT.xlsx'** not found.\n\n"
@@ -198,7 +198,11 @@ def load_data():
         )
         st.stop()
 
-    df = pd.read_csv(file_path)
+    import os, glob
+# Find the Excel file automatically regardless of exact name
+excel_files = glob.glob("*.xlsx") + glob.glob("/app/**/*.xlsx", recursive=True)
+excel_path = excel_files[0] if excel_files else "NTPC_IT-PROJECT.xlsx"
+df = pd.read_excel(excel_path)
 
     # ── Clean column names ──────────────────────────────────────
     df.columns = df.columns.str.strip()
